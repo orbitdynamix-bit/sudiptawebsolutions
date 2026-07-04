@@ -112,11 +112,12 @@ function getSeoMeta(pathname: string): SeoMeta {
 
   if (pathname === '/computer-academy') {
     return {
-      title: 'Computer Academy — School to Higher Education',
+      title: 'Bharat Computer Academy — School to Higher Education',
       description:
-        'Computer Academy offers school-level computer fundamentals (Class VIII–XII), BCA, MCA programs, and free career counselling. Book a free demo class today.',
+        'Bharat Computer Academy offers school-level computer fundamentals (Class VIII–XII), BCA, MCA programs, and free career counselling. Call us for guidance.',
       pathname,
       keywords: [
+        'bharat computer academy',
         'computer academy',
         'computer classes',
         'BCA coaching',
@@ -130,11 +131,12 @@ function getSeoMeta(pathname: string): SeoMeta {
 
   if (pathname === '/computer-academy/register-teacher') {
     return {
-      title: 'Register as a Teacher — Computer Academy',
+      title: 'Register as a Teacher — Bharat Computer Academy',
       description:
-        'Join Computer Academy as an instructor. Teach BCA, MCA, BBA, and computer-related subjects. Submit your credentials and start teaching.',
+        'Join Bharat Computer Academy as an instructor. Teach BCA, MCA, BBA, and computer-related subjects. Submit your credentials and start teaching.',
       pathname,
       keywords: [
+        'bharat computer academy',
         'teacher registration',
         'computer teacher job',
         'BCA MCA instructor',
@@ -167,8 +169,8 @@ export default function App() {
   const location = useLocation();
   const seoMeta = useMemo(() => getSeoMeta(location.pathname), [location.pathname]);
 
-  // Hide header and footer on the computer-academy landing page for customer retention
-  const hideLayout = !!matchPath('/computer-academy', location.pathname);
+  // Hide header and footer on computer-academy routes for customer retention
+  const hideLayout = !!matchPath('/computer-academy', location.pathname) || !!matchPath('/computer-academy/register-teacher', location.pathname);
 
   useEffect(() => {
     applySeo(seoMeta);

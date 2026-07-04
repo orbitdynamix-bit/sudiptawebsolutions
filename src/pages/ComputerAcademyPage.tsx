@@ -360,7 +360,7 @@ export default function ComputerAcademyPage() {
       {/* ── New Hero: Tech Stack Visual ── */}
       <section className="mb-12 rounded-3xl border border-dark-border bg-dark-card p-6 sm:p-8 lg:p-10">
         <div className="text-center">
-          <span className="section-kicker">Computer Academy</span>
+          <span className="section-kicker">Bharat Computer Academy</span>
           <h1 className="mx-auto mt-3 max-w-2xl font-display text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl break-words">
             Learn the Skills That{' '}
             <span className="gradient-text">Power the Future</span>
@@ -387,8 +387,15 @@ export default function ComputerAcademyPage() {
           ))}
         </div>
 
-        {/* CTA */}
+        {/* CTAs */}
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <a
+            href="tel:9007673274"
+            className="btn-primary inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
+          >
+            <ArrowRight className="h-4 w-4" />
+            Free Counselling
+          </a>
           <Link
             to="/computer-academy/register-teacher"
             className="btn-secondary inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
@@ -441,21 +448,21 @@ export default function ComputerAcademyPage() {
         </div>
       </section>
 
-      {/* ── Bottom CTA ── */}
+      {/* ── Free Counselling CTA ── */}
       <section className="rounded-2xl border border-dark-border bg-gradient-to-r from-primary/10 via-dark-card to-accent/5 p-6 sm:p-8 text-center">
         <h2 className="font-display text-xl font-bold text-white sm:text-2xl">
-          Start Your Learning Journey
+          Get Free Career Counselling
         </h2>
         <p className="mx-auto mt-2 max-w-xl text-sm text-slate-300/80">
-          Book a free demo class or speak with our counsellors to choose the right track for you.
+          Confused about which path to choose? Talk to our counsellors for personalized guidance on courses, colleges, and career options.
         </p>
         <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
           <a
-            href="#book-demo"
+            href="tel:9007673274"
             className="btn-primary inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
           >
-            Book Free Demo Class
             <ArrowRight className="h-4 w-4" />
+            Call for Free Counselling
           </a>
           <Link
             to="/"
