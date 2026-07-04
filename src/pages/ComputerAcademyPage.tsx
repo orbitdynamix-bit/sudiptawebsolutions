@@ -8,7 +8,6 @@ import {
   ArrowRight,
   Clock,
   CheckCircle2,
-  Laptop,
   ArrowLeft,
   Home,
 } from 'lucide-react';
@@ -164,76 +163,65 @@ export default function ComputerAcademyPage() {
         </Link>
       </div>
 
-      {/* ── Unified Hero ── */}
-      <div className="mb-10 overflow-hidden rounded-3xl border border-dark-border bg-gradient-to-br from-dark-card via-dark-card to-primary/10">
-        <div className="grid items-center gap-6 p-6 sm:p-8 lg:grid-cols-5 lg:gap-8">
-          {/* Left: Content */}
-          <div className="lg:col-span-3">
-            <span className="section-kicker">Computer Academy</span>
-            <h1 className="mt-2 font-display text-2xl font-bold leading-tight text-white sm:text-3xl break-words">
-              Shape Your Future in{' '}
-              <span className="gradient-text">Tech</span>
-            </h1>
-            <p className="mt-2 max-w-lg text-sm text-slate-300/80 break-words">
-              From school-level computer fundamentals to advanced BCA &amp; MCA programs — we
-              guide every student toward a successful career in technology.
-            </p>
-
-            {/* Feature pills */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              <FeaturePill icon={Monitor} label="School Level: Class VIII–XII" accent="teal" />
-              <FeaturePill icon={Users} label="Free Counselling for Higher Study" accent="orange" />
-            </div>
-
-            {/* CTAs */}
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              <a
-                href="#book-demo"
-                className="btn-primary inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all hover:scale-105 active:scale-95"
-              >
-                Book Free Demo Class
-                <ArrowRight className="h-4 w-4" />
-              </a>
-              <Link
-                to="/computer-academy/register-teacher"
-                className="btn-secondary inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all hover:border-primary/50"
-              >
-                Register as Teacher
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Right: Visual */}
-          <div className="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-center">
-            <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-accent/20 blur-[60px]" />
-              <div className="relative flex h-32 w-32 items-center justify-center rounded-3xl bg-white/5 backdrop-blur border border-white/10 sm:h-36 sm:w-36">
-                <Laptop className="h-14 w-14 text-white/80 sm:h-16 sm:w-16" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Register as Teacher CTA ── */}
-      <div className="mb-10 rounded-2xl border border-dark-border bg-gradient-to-r from-dark-card via-dark-card to-accent/5 p-5 sm:flex sm:items-center sm:justify-between sm:p-6">
-        <div className="mb-3 sm:mb-0">
-          <h3 className="font-display text-base font-bold text-white sm:text-lg">
-            Are You an Educator?
-          </h3>
-          <p className="mt-0.5 text-sm text-slate-300/80">
-            Join our academy as an instructor. Teach BCA, MCA, BBA, and computer-related subjects.
+      {/* ── Hero ── */}
+      <section className="mb-10 rounded-3xl border border-dark-border bg-dark-card p-6 sm:p-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="section-kicker">Computer Academy</span>
+          <h1 className="mt-3 font-display text-3xl font-bold leading-tight text-white sm:text-4xl break-words">
+            Shape Your Future in{' '}
+            <span className="gradient-text">Tech</span>
+          </h1>
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-300/80 sm:text-base break-words">
+            From school-level computer fundamentals to advanced BCA &amp; MCA programs — we
+            guide every student toward a successful career in technology.
           </p>
+
+          {/* Feature pills */}
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+            <FeaturePill icon={Monitor} label="School Level: Class VIII–XII" accent="teal" />
+            <FeaturePill icon={Users} label="Free Counselling for Higher Study" accent="orange" />
+          </div>
+
+          {/* CTAs */}
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <a
+              href="#book-demo"
+              className="btn-primary inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
+            >
+              Book Free Demo Class
+              <ArrowRight className="h-4 w-4" />
+            </a>
+            <Link
+              to="/computer-academy/register-teacher"
+              className="btn-secondary inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
+            >
+              Register as Teacher
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
-        <Link
-          to="/computer-academy/register-teacher"
-          className="btn-primary inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold whitespace-nowrap transition-all hover:scale-105 active:scale-95"
-        >
-          Register as Teacher
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
+      </section>
+
+      {/* ── Educator CTA ── */}
+      <section className="mb-10 rounded-2xl border border-dark-border bg-dark-card p-5 sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <h3 className="font-display text-lg font-bold text-white">
+              Are You an Educator?
+            </h3>
+            <p className="mt-1 text-sm text-slate-300/80 break-words">
+              Join our academy as an instructor. Teach BCA, MCA, BBA, and computer-related subjects.
+            </p>
+          </div>
+          <Link
+            to="/computer-academy/register-teacher"
+            className="btn-primary inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold whitespace-nowrap sm:flex-shrink-0"
+          >
+            Register as Teacher
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
 
       {/* ── Programs Section: School (Row-wise) ── */}
       <section className="mb-14">
