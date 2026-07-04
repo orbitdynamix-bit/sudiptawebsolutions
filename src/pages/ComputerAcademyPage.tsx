@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import {
@@ -7,7 +6,6 @@ import {
   Users,
   Monitor,
   ArrowRight,
-  ChevronDown,
   Clock,
   CheckCircle2,
   Laptop,
@@ -114,57 +112,34 @@ function SchoolCard({ grade, topics }: { grade: string; topics: string[] }) {
   );
 }
 
-function HigherCourseCard({ course, defaultOpen }: { course: HigherCourse; defaultOpen?: boolean }) {
-  const [open, setOpen] = useState(!!defaultOpen);
-  const subjects = course.subjects;
-
+function HigherCourseCard({ course }: { course: HigherCourse }) {
   return (
-    <div className="surface rounded-2xl overflow-hidden">
+    <div className="surface rounded-2xl overflow-hidden p-4 sm:p-5">
       {/* Header */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between p-4 sm:p-5 text-left"
-      >
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/15">
-            <GraduationCap className="h-5 w-5 text-accent" />
-          </div>
-          <div>
-            <h4 className="font-display text-base font-semibold text-white">{course.title}</h4>
-            <span className="flex items-center gap-1.5 text-xs text-slate-400">
-              <Clock className="h-3 w-3" />
-              {course.duration}
-            </span>
-          </div>
+      <div className="mb-4 flex items-center gap-3">
+        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15">
+          <GraduationCap className="h-5 w-5 text-accent" />
         </div>
-        <ChevronDown
-          className={cn(
-            'h-5 w-5 text-slate-400 transition-transform duration-300',
-            open && 'rotate-180',
-          )}
-        />
-      </button>
+        <div className="min-w-0">
+          <h4 className="font-display text-lg font-semibold text-white">{course.title}</h4>
+          <span className="flex items-center gap-1.5 text-xs text-slate-400">
+            <Clock className="h-3 w-3 flex-shrink-0" />
+            {course.duration}
+          </span>
+        </div>
+      </div>
 
-      {/* Subjects */}
-      <div
-        className={cn(
-          'grid transition-all duration-300',
-          open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
-        )}
-      >
-        <div className="min-h-0 overflow-hidden">
-          <div className="grid gap-2 border-t border-dark-border p-4 sm:grid-cols-2">
-            {subjects.map((sub) => (
-              <div
-                key={sub.name}
-                className="rounded-lg bg-dark-light/60 p-3 border border-dark-border/50 card-hover"
-              >
-                <h5 className="mb-0.5 text-sm font-semibold text-primary-light">{sub.name}</h5>
-                <p className="text-xs text-slate-400">{sub.description}</p>
-              </div>
-            ))}
+      {/* Subjects — always visible */}
+      <div className="grid gap-2 sm:grid-cols-2">
+        {course.subjects.map((sub) => (
+          <div
+            key={sub.name}
+            className="rounded-lg bg-dark-light/60 p-3 border border-dark-border/50"
+          >
+            <h5 className="mb-0.5 text-sm font-semibold text-primary-light break-words">{sub.name}</h5>
+            <p className="text-xs text-slate-400 break-words">{sub.description}</p>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
@@ -181,7 +156,7 @@ export default function ComputerAcademyPage() {
       <div className="mb-4">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 rounded-xl border border-dark-border bg-dark-card/60 px-4 py-2 text-sm text-slate-300 transition-all hover:border-primary/40 hover:text-white"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-dark-border bg-dark-card/60 px-4 py-2.5 text-sm text-slate-300 transition-all hover:border-primary/40 hover:text-white sm:w-auto"
         >
           <ArrowLeft className="h-4 w-4" />
           <Home className="h-4 w-4" />
@@ -195,11 +170,11 @@ export default function ComputerAcademyPage() {
           {/* Left: Content */}
           <div className="lg:col-span-3">
             <span className="section-kicker">Computer Academy</span>
-            <h1 className="mt-2 font-display text-2xl font-bold leading-tight text-white sm:text-3xl">
+            <h1 className="mt-2 font-display text-2xl font-bold leading-tight text-white sm:text-3xl break-words">
               Shape Your Future in{' '}
               <span className="gradient-text">Tech</span>
             </h1>
-            <p className="mt-2 max-w-lg text-sm text-slate-300/80">
+            <p className="mt-2 max-w-lg text-sm text-slate-300/80 break-words">
               From school-level computer fundamentals to advanced BCA &amp; MCA programs — we
               guide every student toward a successful career in technology.
             </p>
@@ -295,9 +270,9 @@ export default function ComputerAcademyPage() {
           </div>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          {higherCourses.map((course, i) => (
-            <HigherCourseCard key={course.title} course={course} defaultOpen={i === 0} />
+        <div className="grid gap-4 lg:grid-cols-2">
+          {higherCourses.map((course) => (
+            <HigherCourseCard key={course.title} course={course} />
           ))}
         </div>
       </section>
