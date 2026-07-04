@@ -167,8 +167,8 @@ export default function App() {
   const location = useLocation();
   const seoMeta = useMemo(() => getSeoMeta(location.pathname), [location.pathname]);
 
-  // Hide header/nav on the computer-academy landing page for customer retention
-  const hideNavbar = !!matchPath('/computer-academy', location.pathname);
+  // Hide header and footer on the computer-academy landing page for customer retention
+  const hideLayout = !!matchPath('/computer-academy', location.pathname);
 
   useEffect(() => {
     applySeo(seoMeta);
@@ -181,7 +181,7 @@ export default function App() {
         <div className="absolute top-64 -right-20 h-80 w-80 rounded-full bg-accent/18 blur-[140px]" />
         <div className="absolute bottom-24 left-12 h-64 w-64 rounded-full bg-sky-500/10 blur-[110px]" />
       </div>
-      {!hideNavbar && <Navbar />}
+      {!hideLayout && <Navbar />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/services" element={<ServicesPage />} />
@@ -194,7 +194,7 @@ export default function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      <Footer />
+      {!hideLayout && <Footer />}
     </div>
   );
 }
