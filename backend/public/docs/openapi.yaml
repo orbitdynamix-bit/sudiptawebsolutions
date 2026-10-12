@@ -1,0 +1,424 @@
+openapi: 3.1.0
+info:
+  title: sudiptawebsolutions Lead API
+  version: 1.0.0
+  description: |
+    API for lead capture from the website:
+    - project queries
+    - appointment bookings
+    - newsletter subscriptions
+servers:
+  - url: https://api.sudiptawebsolutions.com/api
+    description: Production
+  - url: http://127.0.0.1:8080/api
+    description: Local development
+tags:
+  - name: Health
+  - name: Leads
+  - name: Admin
+paths:
+  /admin/login:
+    post:
+      tags: [Admin]
+      summary: Admin login
+      operationId: adminLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLoginRequest"
+            example:
+              email: souravhalder583@gmail.com
+              password: your-admin-password
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminLoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                ok: false
+                message: Invalid email or password.
+
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      operationId: healthCheck
+      responses:
+        "200":
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+              example:
+                ok: true
+                message: API is healthy
+                timestamp: "2026-03-09T16:00:00+00:00"
+
+  /project-queries:
+    get:
+      tags: [Admin]
+      summary: List project queries (admin)
+      operationId: listProjectQueries
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 25
+      responses:
+        "200":
+          description: Latest project queries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectQueryListResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                ok: false
+                message: Unauthorized
+
+    post:
+      tags: [Leads]
+      summary: Create project query
+      operationId: createProjectQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectQueryRequest"
+            example:
+              name: John Doe
+              email: john@example.com
+              service: Web Development
+              message: Need a website for my business.
+      responses:
+        "201":
+          description: Project query received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectQueryCreatedResponse"
+              example:
+                ok: true
+                message: Project query received.
+                id: 1
+                email_notified: true
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                ok: false
+                message: email must be a valid email.
+
+  /appointments:
+    post:
+      tags: [Leads]
+      summary: Create appointment request
+      operationId: createAppointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentRequest"
+            example:
+              fullName: Jane Doe
+              email: jane@example.com
+              company: Acme Pvt Ltd
+              preferredDate: "2026-03-15"
+              mode: Online
+              notes: Discuss architecture and timeline.
+      responses:
+        "201":
+          description: Appointment request received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatedResponse"
+              example:
+                ok: true
+                message: Appointment request received.
+                id: 2
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                ok: false
+                message: preferred_date must be in YYYY-MM-DD format.
+
+  /subscribers:
+    post:
+      tags: [Leads]
+      summary: Create or update newsletter subscriber
+      operationId: createSubscriber
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriberRequest"
+            example:
+              email: subscriber@example.com
+      responses:
+        "201":
+          description: Subscriber saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatedResponse"
+              example:
+                ok: true
+                message: Subscriber saved.
+                id: 3
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                ok: false
+                message: email must be a valid email.
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+  schemas:
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        ok:
+          type: boolean
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      required: [ok, message, timestamp]
+
+    ProjectQueryRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        email:
+          type: string
+          format: email
+        service:
+          type: string
+          minLength: 1
+          maxLength: 160
+        message:
+          type: string
+          minLength: 1
+          maxLength: 4000
+      required: [name, email, service, message]
+
+    AdminLoginRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required: [email, password]
+
+    AdminLoginResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        ok:
+          type: boolean
+        message:
+          type: string
+        token:
+          type: string
+        expires_in:
+          type: integer
+        admin:
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              type: integer
+            email:
+              type: string
+              format: email
+          required: [id, email]
+      required: [ok, message, token, expires_in, admin]
+
+    ProjectQueryItem:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        service_name:
+          type: string
+        message:
+          type: string
+        source:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required: [id, name, email, service_name, message, source, created_at, updated_at]
+
+    ProjectQueryListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        ok:
+          type: boolean
+        page:
+          type: integer
+        per_page:
+          type: integer
+        count:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectQueryItem"
+      required: [ok, page, per_page, count, data]
+
+    ProjectQueryCreatedResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        ok:
+          type: boolean
+        message:
+          type: string
+        id:
+          type: integer
+        email_notified:
+          type: boolean
+        email_error:
+          type: string
+          nullable: true
+      required: [ok, message, id, email_notified]
+
+    AppointmentRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        fullName:
+          type: string
+          minLength: 1
+          maxLength: 120
+          description: camelCase key used by frontend
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+          description: snake_case alternative accepted by API
+        email:
+          type: string
+          format: email
+          nullable: true
+        company:
+          type: string
+          maxLength: 160
+          nullable: true
+        preferredDate:
+          type: string
+          format: date
+          description: camelCase key used by frontend
+        preferred_date:
+          type: string
+          format: date
+          description: snake_case alternative accepted by API
+        mode:
+          type: string
+          enum: [Online, Offline]
+        notes:
+          type: string
+          minLength: 1
+          maxLength: 4000
+      required: [mode, notes]
+      oneOf:
+        - required: [fullName, preferredDate]
+        - required: [full_name, preferred_date]
+
+    SubscriberRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+      required: [email]
+
+    CreatedResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        ok:
+          type: boolean
+        message:
+          type: string
+        id:
+          type: integer
+      required: [ok, message, id]
+
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        ok:
+          type: boolean
+          enum: [false]
+        message:
+          type: string
+      required: [ok, message]

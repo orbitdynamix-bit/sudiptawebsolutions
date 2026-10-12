@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import {
@@ -6,8 +7,6 @@ import {
   ArrowRight,
   Clock,
   CheckCircle2,
-  ArrowLeft,
-  Home,
 } from 'lucide-react';
 
 /* ─────────────────────────────────────────────
@@ -253,7 +252,7 @@ const schoolClasses = [
   { grade: 'Class XII', topics: ['Java/OOP', 'Algorithms', 'DBMS', 'Final Year Project'] },
 ];
 
-const higherCourses: HigherCourse[] = [
+const ugCourses: HigherCourse[] = [
   {
     title: 'BCA',
     duration: '3 Years',
@@ -267,6 +266,33 @@ const higherCourses: HigherCourse[] = [
     ],
   },
   {
+    title: 'B.Tech (CSE)',
+    duration: '4 Years',
+    subjects: [
+      { name: 'Discrete Mathematics', description: 'Logic, sets, combinatorics, graph theory' },
+      { name: 'Data Structures & Algorithms', description: 'Advanced DSA, complexity analysis' },
+      { name: 'Computer Networks', description: 'TCP/IP, routing, network security' },
+      { name: 'Database Systems', description: 'ER models, normalization, NoSQL' },
+      { name: 'Operating Systems', description: 'Process scheduling, memory management' },
+      { name: 'AI & Machine Learning', description: 'Neural networks, NLP, computer vision' },
+    ],
+  },
+  {
+    title: 'B.Sc (CS / IT)',
+    duration: '3 Years',
+    subjects: [
+      { name: 'Programming Fundamentals', description: 'C, Python, OOP concepts' },
+      { name: 'Mathematics for Computing', description: 'Linear algebra, calculus, statistics' },
+      { name: 'Web Development', description: 'HTML, CSS, JavaScript, PHP' },
+      { name: 'Database Technologies', description: 'MySQL, MongoDB, data modeling' },
+      { name: 'Computer Architecture', description: 'CPU, memory, I/O organization' },
+      { name: 'Software Project Management', description: 'Agile, Scrum, project planning' },
+    ],
+  },
+];
+
+const pgCourses: HigherCourse[] = [
+  {
     title: 'MCA',
     duration: '2 Years',
     subjects: [
@@ -276,6 +302,18 @@ const higherCourses: HigherCourse[] = [
       { name: 'Big Data Analytics', description: 'Hadoop, Spark, data pipelines' },
       { name: 'Cybersecurity', description: 'Network security, cryptography, ethical hacking' },
       { name: 'Full Stack Development', description: 'React, Node.js, MongoDB, DevOps' },
+    ],
+  },
+  {
+    title: 'M.Sc (CS / IT)',
+    duration: '2 Years',
+    subjects: [
+      { name: 'Advanced Database Systems', description: 'Distributed databases, data warehousing' },
+      { name: 'Research Methodology', description: 'Scientific methods, thesis writing, publications' },
+      { name: 'Advanced Web Technologies', description: 'Microservices, GraphQL, WebSockets' },
+      { name: 'Data Science & Analytics', description: 'Statistical modeling, data visualization' },
+      { name: 'Internet of Things', description: 'Embedded systems, sensor networks, protocols' },
+      { name: 'Cloud & DevOps', description: 'CI/CD, Docker, Kubernetes, monitoring' },
     ],
   },
 ];
@@ -342,22 +380,119 @@ function HigherCourseCard({ course }: { course: HigherCourse }) {
    Page
    ───────────────────────────────────────────── */
 
-export default function ComputerAcademyPage() {
+/* ─── Banner Carousel ─── */
+
+const bannerImages = [
+  'https://images.unsplash.com/photo-1556636530-6b7482d80e3d?q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1200&auto=format&fit=crop',
+];
+
+const banners = [
+  {
+    title: 'Admission Open 2026',
+    subtitle: 'BCA | MCA | School Computer Classes',
+    gradient: 'from-teal-500/40 via-dark-card/85 to-dark-card',
+  },
+  {
+    title: 'Free Career Counselling',
+    subtitle: 'Call now — 9007673274',
+    gradient: 'from-purple-500/40 via-dark-card/85 to-dark-card',
+  },
+  {
+    title: 'Learn from Industry Experts',
+    subtitle: 'Hands-on training with real-world projects',
+    gradient: 'from-orange-500/40 via-dark-card/85 to-dark-card',
+  },
+  {
+    title: 'Placement Assistance',
+    subtitle: '100+ partner companies hiring our graduates',
+    gradient: 'from-blue-500/40 via-dark-card/85 to-dark-card',
+  },
+  {
+    title: 'Start Your Journey Today',
+    subtitle: 'Enroll now and build your future in tech',
+    gradient: 'from-rose-500/40 via-dark-card/85 to-dark-card',
+  },
+];
+
+function BannerCarousel() {
+  const [current, setCurrent] = useState(0);
+  const len = banners.length;
+
+  useEffect(() => {
+    const t = setInterval(() => setCurrent((p) => (p + 1) % len), 4000);
+    return () => clearInterval(t);
+  }, [len]);
+
+  const go = (i: number) => setCurrent(((i % len) + len) % len);
+
   return (
-    <main className="relative z-10 mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
-      {/* ── Back to Home ── */}
-      <div className="mb-4">
-        <Link
-          to="/"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-dark-border bg-dark-card/60 px-4 py-2.5 text-sm text-slate-300 transition-all hover:border-primary/40 hover:text-white sm:w-auto"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <Home className="h-4 w-4" />
-          Back to Home
-        </Link>
+    <div className="relative mb-8 overflow-hidden rounded-2xl border border-dark-border bg-dark-card">
+      <div
+        className="flex transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${current * 100}%)` }}
+      >
+        {banners.map((b, i) => (
+          <div
+            key={i}
+            className="relative flex w-full flex-shrink-0 items-center justify-center overflow-hidden px-6 py-16 sm:px-12 sm:py-24"
+            style={{
+              backgroundImage: `url(${bannerImages[i]})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            <div className="absolute inset-0 bg-dark-card/60" />
+            <div className="relative text-center">
+              <h2 className="font-display text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
+                {b.title}
+              </h2>
+              <p className="mt-2 text-sm text-slate-300/80 sm:text-base">{b.subtitle}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* ── New Hero: Tech Stack Visual ── */}
+      {/* Arrows */}
+      <button
+        onClick={() => go(current - 1)}
+        className="absolute left-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-dark-border bg-dark-card/80 text-slate-300 transition-colors hover:border-primary/40 hover:text-white"
+      >
+        ‹
+      </button>
+      <button
+        onClick={() => go(current + 1)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-dark-border bg-dark-card/80 text-slate-300 transition-colors hover:border-primary/40 hover:text-white"
+      >
+        ›
+      </button>
+
+      {/* Dots */}
+      <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-2">
+        {banners.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`h-2 rounded-full transition-all ${
+              i === current ? 'w-6 bg-primary' : 'w-2 bg-slate-600'
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function ComputerAcademyPage() {
+  return (
+    <main className="relative z-10 mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 lg:px-8" style={{ marginTop: '56px' }}>
+      {/* ── Banner Carousel ── */}
+      <BannerCarousel />
+
+      {/* ── Hero: Tech Stack Visual ── */}
       <section className="mb-12 rounded-3xl border border-dark-border bg-dark-card p-6 sm:p-8 lg:p-10">
         <div className="text-center">
           <span className="section-kicker">Bharat Computer Academy</span>
@@ -427,22 +562,43 @@ export default function ComputerAcademyPage() {
         </div>
       </section>
 
-      {/* ── Programs Section: College (Row-wise) ── */}
+      {/* ── Programs Section: Undergraduate ── */}
       <section className="mb-14">
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <span className="section-kicker">Higher Education</span>
+            <span className="section-kicker">Undergraduate Programs</span>
             <h2 className="mt-1 font-display text-xl font-bold text-white sm:text-2xl">
-              BCA & MCA
+              BCA | B.Tech | B.Sc
             </h2>
             <p className="mt-1 max-w-2xl text-sm text-slate-300/70">
-              Advance your career with in-depth coaching for bachelor and master level computer applications.
+              Build your career with industry-aligned bachelor's degrees in computer science, IT, and technology.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-3">
+          {ugCourses.map((course) => (
+            <HigherCourseCard key={course.title} course={course} />
+          ))}
+        </div>
+      </section>
+
+      {/* ── Programs Section: Postgraduate ── */}
+      <section className="mb-14">
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <span className="section-kicker">Postgraduate Programs</span>
+            <h2 className="mt-1 font-display text-xl font-bold text-white sm:text-2xl">
+              MCA | M.Sc
+            </h2>
+            <p className="mt-1 max-w-2xl text-sm text-slate-300/70">
+              Advance your expertise with master's level programs designed for leadership in tech.
             </p>
           </div>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">
-          {higherCourses.map((course) => (
+          {pgCourses.map((course) => (
             <HigherCourseCard key={course.title} course={course} />
           ))}
         </div>
@@ -464,13 +620,6 @@ export default function ComputerAcademyPage() {
             <ArrowRight className="h-4 w-4" />
             Call for Free Counselling
           </a>
-          <Link
-            to="/"
-            className="btn-secondary inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </Link>
         </div>
       </section>
 

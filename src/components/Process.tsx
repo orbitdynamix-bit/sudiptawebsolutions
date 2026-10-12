@@ -4,7 +4,7 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 const steps = [
   { icon: Search, title: 'Discovery', desc: 'We analyze your requirements, market, and competitors to define the perfect strategy and roadmap.', color: 'from-blue-500 to-cyan-500' },
   { icon: PenTool, title: 'Design', desc: 'Our designers create stunning wireframes and prototypes that align with your brand and delight users.', color: 'from-teal-500 to-emerald-500' },
-  { icon: Code, title: 'Develop', desc: 'Our engineers build your solution using agile methodology with regular demos and feedback cycles.', color: 'from-amber-500 to-orange-500' },
+  { icon: Code, title: 'Develop', desc: 'Our engineers build your solution using agile methodology with regular updates and feedback cycles.', color: 'from-amber-500 to-orange-500' },
   { icon: Rocket, title: 'Deploy', desc: 'We launch your product with CI/CD pipelines, monitoring, and provide ongoing support and optimization.', color: 'from-green-500 to-teal-500' },
 ];
 

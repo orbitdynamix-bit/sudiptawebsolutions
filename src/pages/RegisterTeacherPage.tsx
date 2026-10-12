@@ -5,14 +5,10 @@ import {
   Briefcase,
   BookOpen,
   Award,
-  Upload,
   CheckCircle2,
   ArrowLeft,
   Sparkles,
   Home,
-  IdCard,
-  Camera,
-  FileText,
   MapPin,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -45,19 +41,55 @@ const BENEFITS = [
 export default function RegisterTeacherPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    pincode: '',
+    experience: '',
+    qualification: '',
+    subjects: [] as string[],
+    message: '',
+  });
+
+  const update = (field: string, value: string) => setForm({ ...form, [field]: value });
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setError('');
+
+    try {
+      const res = await fetch('https://admin.sudiptawebsolutions.com/api/project-queries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          service: 'Teacher Registration',
+          message: `Qualification: ${form.qualification}\nExperience: ${form.experience}\nSubjects: ${form.subjects.join(', ')}\nAddress: ${form.address}, ${form.city}, ${form.state} - ${form.pincode}\n\n${form.message}`,
+        }),
+      });
+
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.message || 'Submission failed');
       setSubmitted(true);
-    }, 1200);
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
     return (
-      <main className="relative z-10 mx-auto flex min-h-[70vh] max-w-lg flex-col items-center justify-center px-4 pb-24 pt-40 text-center">
+      <main className="relative z-10 mx-auto flex min-h-[70vh] max-w-lg flex-col items-center justify-center px-4 pb-24 pt-40 text-center" style={{ marginTop: '56px' }}>
         <div className="glass rounded-3xl p-10 sm:p-14">
           <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/20">
             <CheckCircle2 className="h-10 w-10 text-primary-light" />
@@ -82,7 +114,7 @@ export default function RegisterTeacherPage() {
   }
 
   return (
-    <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-6 sm:px-6 lg:px-8">
+    <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-6 sm:px-6 lg:px-8" style={{ marginTop: '56px' }}>
       {/* Back links */}
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <Link
@@ -164,6 +196,8 @@ export default function RegisterTeacherPage() {
                 <input
                   type="text"
                   required
+                  value={form.name}
+                  onChange={(e) => update('name', e.target.value)}
                   placeholder="Dr. John Doe"
                   className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
                 />
@@ -177,6 +211,8 @@ export default function RegisterTeacherPage() {
                 <input
                   type="email"
                   required
+                  value={form.email}
+                  onChange={(e) => update('email', e.target.value)}
                   placeholder="teacher@example.com"
                   className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
                 />
@@ -190,6 +226,8 @@ export default function RegisterTeacherPage() {
                 <input
                   type="tel"
                   required
+                  value={form.phone}
+                  onChange={(e) => update('phone', e.target.value)}
                   placeholder="+91 98765 43210"
                   className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
                 />
@@ -204,6 +242,8 @@ export default function RegisterTeacherPage() {
                 <input
                   type="text"
                   required
+                  value={form.address}
+                  onChange={(e) => update('address', e.target.value)}
                   placeholder="House/Flat, Street, Locality"
                   className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
                 />
@@ -214,6 +254,8 @@ export default function RegisterTeacherPage() {
                 <input
                   type="text"
                   required
+                  value={form.city}
+                  onChange={(e) => update('city', e.target.value)}
                   placeholder="City"
                   className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
                 />
@@ -222,6 +264,8 @@ export default function RegisterTeacherPage() {
                 <input
                   type="text"
                   required
+                  value={form.state}
+                  onChange={(e) => update('state', e.target.value)}
                   placeholder="State"
                   className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
                 />
@@ -230,6 +274,8 @@ export default function RegisterTeacherPage() {
                 <input
                   type="text"
                   required
+                  value={form.pincode}
+                  onChange={(e) => update('pincode', e.target.value)}
                   placeholder="PIN Code"
                   className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
                 />
@@ -242,7 +288,8 @@ export default function RegisterTeacherPage() {
                 </label>
                 <select
                   required
-                  defaultValue=""
+                  value={form.experience}
+                  onChange={(e) => update('experience', e.target.value)}
                   className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-3 text-sm text-white focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors appearance-none"
                   style={{
                     backgroundImage:
@@ -265,11 +312,9 @@ export default function RegisterTeacherPage() {
               {/* Subject Expertise */}
               <div className="sm:col-span-2">
                 <label className="mb-1.5 block text-sm font-medium text-slate-300">
-                  Subject Expertise (select all that apply){' '}
-                  <span className="text-accent">*</span>
+                  Subject Expertise (select all that apply)
                 </label>
                 <select
-                  required
                   multiple
                   className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-3 text-sm text-white focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
                   style={{ minHeight: '7rem' }}
@@ -293,69 +338,14 @@ export default function RegisterTeacherPage() {
                 <input
                   type="text"
                   required
+                  value={form.qualification}
+                  onChange={(e) => update('qualification', e.target.value)}
                   placeholder="e.g. M.Tech in Computer Science, Ph.D."
                   className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
                 />
               </div>
 
-              {/* ── Document Uploads ── */}
-              <div className="sm:col-span-2 mt-2">
-                <p className="mb-3 text-sm font-semibold text-slate-200">Upload Documents</p>
-              </div>
 
-              {/* Aadhar Card */}
-              <div>
-                <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-slate-300">
-                  <IdCard className="h-3.5 w-3.5 text-accent" />
-                  Aadhar Card <span className="text-accent">*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="file"
-                    required
-                    accept="image/*,.pdf"
-                    className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-8 text-sm text-slate-400 file:mr-4 file:rounded-lg file:border-0 file:bg-primary/15 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary-light hover:file:bg-primary/25 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
-                  />
-                  <Upload className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 h-5 w-5 text-slate-500" />
-                </div>
-                <p className="mt-1 text-xs text-slate-500">Front & back side (image or PDF)</p>
-              </div>
-
-              {/* Passport Photo */}
-              <div>
-                <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-slate-300">
-                  <Camera className="h-3.5 w-3.5 text-accent" />
-                  Passport Size Photo <span className="text-accent">*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="file"
-                    required
-                    accept="image/*"
-                    className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-8 text-sm text-slate-400 file:mr-4 file:rounded-lg file:border-0 file:bg-primary/15 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary-light hover:file:bg-primary/25 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
-                  />
-                  <Upload className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 h-5 w-5 text-slate-500" />
-                </div>
-                <p className="mt-1 text-xs text-slate-500">Recent passport size photograph</p>
-              </div>
-
-              {/* Final Marksheet */}
-              <div className="sm:col-span-2">
-                <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-slate-300">
-                  <FileText className="h-3.5 w-3.5 text-accent" />
-                  Final Marksheet <span className="text-accent">*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="file"
-                    required
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    className="w-full rounded-xl border border-dark-border bg-dark-light/80 px-4 py-8 text-sm text-slate-400 file:mr-4 file:rounded-lg file:border-0 file:bg-primary/15 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary-light hover:file:bg-primary/25 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
-                  />
-                  <Upload className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 h-5 w-5 text-slate-500" />
-                </div>
-                <p className="mt-1 text-xs text-slate-500">Highest degree marksheet</p>
-              </div>
 
               {/* Cover Note */}
               <div className="sm:col-span-2">
@@ -364,6 +354,8 @@ export default function RegisterTeacherPage() {
                 </label>
                 <textarea
                   rows={4}
+                  value={form.message}
+                  onChange={(e) => update('message', e.target.value)}
                   placeholder="Tell us about your teaching philosophy and why you'd be a great fit..."
                   className="w-full resize-none rounded-xl border border-dark-border bg-dark-light/80 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
                 />

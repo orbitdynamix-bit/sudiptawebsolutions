@@ -1,24 +1,32 @@
-import { Globe, Smartphone, Cloud, Brain, Settings, Palette } from 'lucide-react';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { useEffect, useState } from 'react';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import ScrollStack, { ScrollStackItem } from './ScrollStack';
+import { services } from '../data/services';
 
-const services = [
-  { icon: Globe, title: 'Web Development', desc: 'Full-stack web applications with React, Next.js, and Node.js. Blazing-fast, SEO-optimized, and scalable.', color: 'from-blue-500 to-cyan-500' },
-  { icon: Smartphone, title: 'Mobile Apps', desc: 'Cross-platform mobile apps with React Native and Flutter. Native performance, single codebase.', color: 'from-teal-500 to-emerald-500' },
-  { icon: Cloud, title: 'Cloud Solutions', desc: 'AWS, GCP & Azure infrastructure. Auto-scaling, CI/CD pipelines, and serverless architectures.', color: 'from-cyan-500 to-teal-500' },
-  { icon: Brain, title: 'AI & ML', desc: 'Intelligent solutions powered by machine learning, NLP, and computer vision. Data-driven decisions.', color: 'from-amber-500 to-orange-500' },
-  { icon: Settings, title: 'DevOps', desc: 'Docker, Kubernetes, and Terraform. Automated deployments, monitoring, and infrastructure as code.', color: 'from-green-500 to-emerald-500' },
-  { icon: Palette, title: 'UI/UX Design', desc: 'User-centered design with Figma. Wireframes, prototypes, and design systems that delight users.', color: 'from-orange-500 to-red-500' },
-];
+interface ServicesProps {
+  limit?: number;
+  showAllLink?: boolean;
+}
 
-export default function Services() {
-  const { ref, isVisible } = useScrollAnimation();
+export default function Services({ limit, showAllLink = false }: ServicesProps) {
+  const visibleServices = typeof limit === 'number' ? services.slice(0, limit) : services;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)');
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
 
   return (
-    <section id="services" className="py-24 relative">
+    <section id="services" className="pt-24 pb-14 relative">
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]" />
       </div>
-      <div ref={ref} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
           <span className="section-kicker">What We Do</span>
           <h2 className="section-title font-bold">
@@ -29,21 +37,69 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, i) => (
-            <div
-              key={service.title}
-              className={`group p-8 rounded-2xl surface card-hover ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
-              style={{ animationDelay: `${i * 100}ms` }}
-            >
-              <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                <service.icon className="w-7 h-7 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
-              <p className="text-slate-300 leading-relaxed">{service.desc}</p>
-            </div>
-          ))}
+        <div className="mx-auto w-[94%] sm:w-[90%] lg:w-full">
+          <ScrollStack
+            className="h-auto overflow-visible"
+            useWindowScroll
+            itemDistance={isMobile ? 40 : 64}
+            itemScale={isMobile ? 0.018 : 0.022}
+            itemStackDistance={isMobile ? 16 : 24}
+            stackPosition={isMobile ? '18%' : '24%'}
+            scaleEndPosition={isMobile ? '12%' : '10%'}
+            baseScale={isMobile ? 0.94 : 0.9}
+            rotationAmount={isMobile ? 0 : 0.12}
+            blurAmount={0}
+          >
+            {visibleServices.map((service, index) => (
+              <ScrollStackItem
+                key={service.slug}
+                itemClassName="h-auto min-h-[228px] lg:min-h-[208px] my-5 p-0 glass border border-dark-border/70 shadow-[0_22px_48px_rgba(3,9,18,0.42)]"
+              >
+                <Link to={`/services/${service.slug}`} className="group block h-full w-full rounded-[34px] p-6 lg:p-8">
+                  <div className="flex items-start justify-between gap-5 mb-5">
+                    <div className={`w-12 h-12 lg:w-14 lg:h-14 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                      <service.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[10px] lg:text-xs tracking-[0.18em] uppercase text-slate-400 mb-1">Service</div>
+                      <div className="text-xl lg:text-2xl font-extrabold text-slate-200 leading-none">
+                        {(index + 1).toString().padStart(2, '0')}
+                      </div>
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl lg:text-2xl font-bold text-white mb-2">{service.title}</h3>
+                  <p className="text-slate-300 text-sm lg:text-base leading-relaxed mb-5 max-w-3xl">{service.desc}</p>
+
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {service.tools.slice(0, 4).map((tool) => (
+                      <span
+                        key={tool}
+                        className="px-2.5 py-1 rounded-lg text-[11px] lg:text-sm text-slate-200 bg-dark-light/80 border border-dark-border/80"
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="inline-flex items-center gap-2 text-emerald-300 text-sm lg:text-base font-semibold group-hover:text-emerald-200 transition-colors">
+                    Explore Service
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+              </ScrollStackItem>
+            ))}
+          </ScrollStack>
         </div>
+
+        {showAllLink && (
+          <div className="mt-6 flex justify-center">
+            <Link to="/services" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl btn-secondary font-semibold">
+              View All Services
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

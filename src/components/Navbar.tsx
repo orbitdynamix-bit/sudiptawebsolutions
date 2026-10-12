@@ -1,11 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Code2 } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
-const navLinks = ['Home', 'Services', 'Projects', 'About', 'Contact'];
+const navLinks = [
+  { label: 'Home', to: '/' },
+  { label: 'Services', to: '/services' },
+  { label: 'About', to: '/about' },
+  { label: 'Computer Academy', to: '/computer-academy' },
+  { label: 'Corporate Training', to: '/services/corporate-training' },
+  { label: 'Contact', to: '/contact' },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -13,34 +22,71 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const close = () => setIsOpen(false);
+    window.addEventListener('resize', close);
+    return () => window.removeEventListener('resize', close);
+  }, []);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass shadow-xl' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <a href="#home" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary via-teal-500 to-accent flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Code2 className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-xl font-bold gradient-text">SudiptaInfotech</span>
-          </a>
+          <Link to={location.pathname.startsWith('/computer-academy') ? '/computer-academy' : '/'} className="group">
+            {location.pathname.startsWith('/computer-academy') ? (
+              <>
+                <span className="block text-lg sm:text-xl font-black tracking-[0.12em] text-white group-hover:text-teal-200 transition-colors">
+                  BHARAT COMPUTER ACADEMY
+                </span>
+                <span className="block text-[10px] sm:text-xs tracking-[0.28em] text-slate-400 uppercase">
+                  Learn | Grow | Excel
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="block text-lg sm:text-xl font-black tracking-[0.12em] text-white group-hover:text-teal-200 transition-colors">
+                  SUDIPTA WEB SOLUTIONS
+                </span>
+                <span className="block text-[10px] sm:text-xs tracking-[0.28em] text-slate-400 uppercase">
+                  Software | SEO | Training
+                </span>
+              </>
+            )}
+          </Link>
 
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
-                className="text-slate-300 hover:text-white transition-colors relative group text-sm font-semibold"
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  `group text-sm font-semibold transition-colors relative ${
+                    isActive ? 'text-white' : 'text-slate-300 hover:text-white'
+                  }`
+                }
               >
-                {link}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-300" />
-              </a>
+                {({ isActive }) => (
+                  <>
+                    {link.label}
+                    <span
+                      className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 ${
+                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                      }`}
+                    />
+                  </>
+                )}
+              </NavLink>
             ))}
-            <a
-              href="#contact"
+            <Link
+              to="/computer-academy"
               className="px-5 py-2.5 rounded-xl btn-primary text-sm font-semibold transition-all"
             >
-              Get Started
-            </a>
+              Free Demo Class
+            </Link>
           </div>
 
           <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white p-2 rounded-lg border border-dark-border/80 bg-dark-light/60">
@@ -53,22 +99,24 @@ export default function Navbar() {
         <div className="md:hidden glass border-t border-dark-border">
           <div className="px-4 py-4 space-y-3">
             {navLinks.map((link) => (
-              <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
+              <NavLink
+                key={link.to}
+                to={link.to}
                 onClick={() => setIsOpen(false)}
-                className="block text-slate-300 hover:text-white py-2 text-sm font-semibold"
+                className={({ isActive }) =>
+                  `block py-2 text-sm font-semibold ${isActive ? 'text-white' : 'text-slate-300 hover:text-white'}`
+                }
               >
-                {link}
-              </a>
+                {link.label}
+              </NavLink>
             ))}
-            <a
-              href="#contact"
+            <Link
+              to="/computer-academy"
               onClick={() => setIsOpen(false)}
               className="block text-center px-5 py-2.5 rounded-xl btn-primary text-sm font-semibold"
             >
-              Get Started
-            </a>
+              Free Demo Class
+            </Link>
           </div>
         </div>
       )}

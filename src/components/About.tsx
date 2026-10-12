@@ -3,17 +3,17 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { Linkedin, Twitter, Github } from 'lucide-react';
 
 const stats = [
-  { target: 150, label: 'Projects Delivered', suffix: '+' },
-  { target: 50, label: 'Happy Clients', suffix: '+' },
-  { target: 8, label: 'Years Experience', suffix: '+' },
-  { target: 30, label: 'Team Members', suffix: '+' },
+  { target: 50, label: 'Projects', suffix: '+' },
+  { target: 40, label: 'Happy Clients', suffix: '+' },
+  { target: 5, label: 'Years Experience', suffix: '+' },
+  { target: 10, label: 'Training Batches', suffix: '+' },
 ];
 
 const team = [
-  { name: 'Alex Chen', role: 'CEO & Founder', gradient: 'from-blue-500 to-cyan-500', initials: 'AC' },
-  { name: 'Sarah Miller', role: 'CTO', gradient: 'from-teal-500 to-emerald-500', initials: 'SM' },
-  { name: 'David Park', role: 'Lead Designer', gradient: 'from-amber-500 to-orange-500', initials: 'DP' },
-  { name: 'Emma Wilson', role: 'Lead Engineer', gradient: 'from-green-500 to-teal-500', initials: 'EW' },
+  { name: 'Sudipta Pan', role: 'Founder & CEO', gradient: 'from-blue-500 to-cyan-500', initials: 'SP' },
+  { name: 'Sourav Halder', role: 'CTO', gradient: 'from-teal-500 to-emerald-500', initials: 'SH' },
+  { name: 'Rishav Das', role: 'Lead Designer', gradient: 'from-amber-500 to-orange-500', initials: 'RD' },
+  { name: 'Bapan Halder', role: 'Lead Engineer', gradient: 'from-green-500 to-teal-500', initials: 'BH' },
 ];
 
 function Counter({ target, suffix }: { target: number; suffix: string }) {
@@ -57,10 +57,10 @@ export default function About() {
         <div className="text-center mb-16">
           <span className="section-kicker">About Us</span>
           <h2 className="section-title font-bold">
-            Who <span className="gradient-text">We Are</span>
+            About <span className="gradient-text">SUDIPTA WEB SOLUTIONS</span>
           </h2>
           <p className="section-description">
-            A passionate team of developers, designers, and innovators dedicated to building exceptional digital products.
+            We are a software, SEO and corporate training company based in Kolkata, focused on practical delivery and measurable business outcomes.
           </p>
         </div>
 

@@ -169,8 +169,9 @@ export default function App() {
   const location = useLocation();
   const seoMeta = useMemo(() => getSeoMeta(location.pathname), [location.pathname]);
 
-  // Hide header and footer on computer-academy routes for customer retention
-  const hideLayout = !!matchPath('/computer-academy', location.pathname) || !!matchPath('/computer-academy/register-teacher', location.pathname);
+  // Hide footer on computer-academy routes; show navbar with academy branding
+  const isAcademyRoute = !!matchPath('/computer-academy', location.pathname) || !!matchPath('/computer-academy/register-teacher', location.pathname);
+  const hideLayout = isAcademyRoute;
 
   useEffect(() => {
     applySeo(seoMeta);
@@ -183,7 +184,7 @@ export default function App() {
         <div className="absolute top-64 -right-20 h-80 w-80 rounded-full bg-accent/18 blur-[140px]" />
         <div className="absolute bottom-24 left-12 h-64 w-64 rounded-full bg-sky-500/10 blur-[110px]" />
       </div>
-      {!hideLayout && <Navbar />}
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/services" element={<ServicesPage />} />
