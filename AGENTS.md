@@ -39,6 +39,7 @@ npx tsc --noEmit  # TypeScript check (no lint/test scripts)
 | `/reviews` | `ReviewsPage` | |
 | `/contact` | `ContactPage` | |
 | `/computer-academy` | `ComputerAcademyPage` | Feature cards, hero, tabbed program grids |
+| `/computer-academy/free-counselling` | `HigherStudyCounsellingPage` | Higher-study counselling form |
 | `/computer-academy/register-teacher` | `RegisterTeacherPage` | Teacher registration form |
 | `/admin` | `AdminPage` | Protected — session token in sessionStorage |
 | `*` | → `/` | Catch-all redirect |

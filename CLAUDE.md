@@ -82,3 +82,17 @@ Custom utility classes (`.glass`, `.gradient-text`, `.btn-primary`, `.btn-second
 ### Build Note
 
 `vite-plugin-singlefile` is installed and can bundle everything into a single HTML file. Check `vite.config.ts` to see if it's currently active.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live in GitHub Issues; use the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Use `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, and `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+This is a single-context repo; see `docs/agents/domain.md` for glossary and ADR guidance.

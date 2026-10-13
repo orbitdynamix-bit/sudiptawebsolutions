@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import HigherStudyCounsellingSection from '@/components/HigherStudyCounsellingSection';
 import {
   GraduationCap,
   BookOpen,
@@ -524,13 +524,13 @@ export default function ComputerAcademyPage() {
 
         {/* CTAs */}
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <a
-            href="tel:9007673274"
+          <Link
+            to="/computer-academy/free-counselling"
             className="btn-primary inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
           >
             <ArrowRight className="h-4 w-4" />
             Free Counselling
-          </a>
+          </Link>
           <Link
             to="/computer-academy/register-teacher"
             className="btn-secondary inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
@@ -604,24 +604,8 @@ export default function ComputerAcademyPage() {
         </div>
       </section>
 
-      {/* ── Free Counselling CTA ── */}
-      <section className="rounded-2xl border border-dark-border bg-gradient-to-r from-primary/10 via-dark-card to-accent/5 p-6 sm:p-8 text-center">
-        <h2 className="font-display text-xl font-bold text-white sm:text-2xl">
-          Get Free Career Counselling
-        </h2>
-        <p className="mx-auto mt-2 max-w-xl text-sm text-slate-300/80">
-          Confused about which path to choose? Talk to our counsellors for personalized guidance on courses, colleges, and career options.
-        </p>
-        <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-          <a
-            href="tel:9007673274"
-            className="btn-primary inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
-          >
-            <ArrowRight className="h-4 w-4" />
-            Call for Free Counselling
-          </a>
-        </div>
-      </section>
+      {/* ── Free Counselling Form ── */}
+      <HigherStudyCounsellingSection />
 
     </main>
   );

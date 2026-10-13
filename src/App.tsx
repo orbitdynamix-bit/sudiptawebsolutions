@@ -1,13 +1,14 @@
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import { useEffect, useMemo } from 'react';
-import { Navigate, Route, Routes, useLocation, matchPath } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { services } from './data/services';
 import { applySeo, type SeoMeta } from './lib/seo';
 import AboutPage from './pages/AboutPage';
 import AdminPage from './pages/AdminPage';
 import ComputerAcademyPage from './pages/ComputerAcademyPage';
 import ContactPage from './pages/ContactPage';
+import HigherStudyCounsellingPage from './pages/HigherStudyCounsellingPage';
 import HomePage from './pages/HomePage';
 import RegisterTeacherPage from './pages/RegisterTeacherPage';
 import ReviewsPage from './pages/ReviewsPage';
@@ -146,6 +147,22 @@ function getSeoMeta(pathname: string): SeoMeta {
     };
   }
 
+  if (pathname === '/computer-academy/free-counselling') {
+    return {
+      title: 'Free Counselling for Higher Study — Bharat Computer Academy',
+      description:
+        'Request free higher-study counselling from Bharat Computer Academy. Share your education and interests to get guidance on courses, colleges, and career options.',
+      pathname,
+      keywords: [
+        'higher study counselling',
+        'free career counselling',
+        'Bharat Computer Academy',
+        'higher education guidance',
+        'kolkata',
+      ],
+    };
+  }
+
   if (pathname === '/admin') {
     return {
       title: 'Admin Leads Dashboard',
@@ -170,7 +187,9 @@ export default function App() {
   const seoMeta = useMemo(() => getSeoMeta(location.pathname), [location.pathname]);
 
   // Hide footer on computer-academy routes; show navbar with academy branding
-  const isAcademyRoute = !!matchPath('/computer-academy', location.pathname) || !!matchPath('/computer-academy/register-teacher', location.pathname);
+  const isAcademyRoute =
+    location.pathname === '/computer-academy' ||
+    location.pathname.startsWith('/computer-academy/');
   const hideLayout = isAcademyRoute;
 
   useEffect(() => {
@@ -193,6 +212,7 @@ export default function App() {
         <Route path="/reviews" element={<ReviewsPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/computer-academy" element={<ComputerAcademyPage />} />
+        <Route path="/computer-academy/free-counselling" element={<HigherStudyCounsellingPage />} />
         <Route path="/computer-academy/register-teacher" element={<RegisterTeacherPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
